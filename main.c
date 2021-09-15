@@ -199,7 +199,7 @@ static __attribute__((always_inline)) unsigned int bitcount32(unsigned int b)
 
 
 /****************************************************
- * Memory allocation, I can change this to use L2 cache
+ * Memory allocation, I change this to use L2 cache
  * L1_CL_MEM 64KB
  * L1_FC_MEM 8KB
  * L2_MEM 512KB
@@ -725,7 +725,7 @@ void __attribute__((noinline)) XORSConv3X3(FULL_PRECISION *__restrict__ Input, i
     }
 
 
-    // XNOR-Net Conv
+    // XOR-Net-S Conv
     if (layer==2){
         for (int iw = 0; iw < Wo; iw++) {
             for (int ih = 0; ih < Ho; ih++) {
@@ -822,9 +822,6 @@ void __attribute__((noinline)) Parallel_XORSConv3X3(ArgConvTxor *Arg)
     int Wo=W-2;
     int Ho=H-2;
 
-    // This is the scaling factor matrix K
-    //float Inputsum[H*W];
-    //float Infactor[Ho*Wo];
     // the packed channel num
     int PackedC=C/32;
     // the number of bits that do a popc(XOR)
@@ -938,7 +935,8 @@ void __attribute__((noinline)) Parallel_XORSConv3X3(ArgConvTxor *Arg)
     }
 
     rt_team_barrier();
-    // XNOR-Net Conv
+	
+    // XOR-Net-S Conv
     if (layer==2){
         for (int fn = F_F; fn < F_L; fn++) {
             for (int ih = 0; ih < Ho; ih++) {
@@ -1042,7 +1040,7 @@ void __attribute__((noinline)) BCNNConv3X3(FULL_PRECISION *__restrict__ Input,  
     }
 
 
-    // XNOR-Net Conv
+    // BCNN Conv
     for (int iw = 0; iw < Wo; iw++) {
         for (int ih = 0; ih < Ho; ih++) {
             for (int fn = 0; fn < Filternum; fn++) {
@@ -1106,9 +1104,6 @@ void __attribute__((noinline)) Parallel_BCNNConv3X3(ArgConvTxor *Arg)
     int Wo=W-2;
     int Ho=H-2;
 
-    // This is for the scaling factor matrix K
-    //float Inputsum[H*W];
-    //float Infactor[Ho*Wo];
     // the packed channel num
     int PackedC=C/32;
     // the number of bits that do a pop_count(XOR)
@@ -1161,7 +1156,7 @@ void __attribute__((noinline)) Parallel_BCNNConv3X3(ArgConvTxor *Arg)
 
     rt_team_barrier();
 	
-    // XNOR Conv
+    // BCNN Conv
     for (int fn = F_F; fn < F_L; fn++) {
         for (int ih = 0; ih < Ho; ih++) {
            for (int iw = W_F; iw < W_L; iw++) {
@@ -1234,7 +1229,7 @@ void __attribute__((noinline)) XORConv3X3(FULL_PRECISION *__restrict__ Input,  i
     }
 
 
-    // XNOR-Net Conv
+    // XOR-Net Conv
     for (int iw = 0; iw < Wo; iw++) {
         for (int ih = 0; ih < Ho; ih++) {
             for (int fn = 0; fn < Filternum; fn++) {
@@ -1297,9 +1292,6 @@ void __attribute__((noinline)) Parallel_XORConv3X3(ArgConvTxor *Arg)
     int Wo=W-2;
     int Ho=H-2;
 
-    // This is for the scaling factor matrix K
-    //float Inputsum[H*W];
-    //float Infactor[Ho*Wo];
     // the packed channel num
     int PackedC=C/32;
     // the number of bits that do a pop_count(XOR)
@@ -1352,7 +1344,7 @@ void __attribute__((noinline)) Parallel_XORConv3X3(ArgConvTxor *Arg)
 
     rt_team_barrier();
 	
-    // XNOR Conv
+    // XOR-Net Conv
     for (int fn = F_F; fn < F_L; fn++) {
         for (int ih = 0; ih < Ho; ih++) {
              for (int iw = W_F; iw < W_L; iw++) {
@@ -1522,7 +1514,7 @@ int RunTests(ClusterArg_t * ArgC )
             *num_ops = Ti;
             break;
 
-		// CI-BCNN Conv
+	// CI-BCNN Conv
         case 6:
             In = Mem; Out = Mem+H*W*C;
             XNORFilter=(unsigned int *)Mem+H*W*C+(H-2)*(W-2)*Filternum;Ffactor=Mem+H*W*C+(H-2)*(W-2)*Filternum+KH*KW*C*Filternum;
@@ -1564,7 +1556,7 @@ int RunTests(ClusterArg_t * ArgC )
             break;
 
 			
-		// XOR-Net Conv in the paper
+	// XOR-Net Conv in the paper
         case 8:
             In = Mem; Out = Mem+H*W*C;
             XNORFilter=(unsigned int *)Mem+H*W*C+(H-2)*(W-2)*Filternum;Ffactor=Mem+H*W*C+(H-2)*(W-2)*Filternum+KH*KW*C*Filternum;
@@ -1669,7 +1661,7 @@ int main()
 
 
     // Iterate on the configuration of layers, e.g. CHW={32, 14, 14}
-	for (int cycle=4; cycle<tcycle; cycle++)
+    for (int cycle=4; cycle<tcycle; cycle++)
     {
 	    cur_test=0;
 		int numk;
