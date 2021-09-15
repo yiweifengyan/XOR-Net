@@ -1,0 +1,234 @@
+(base) user@user-ubuntu:~/gap8/gap_sdk/benchmarks/xornet$ make clean all run
+mkdir -p /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV
+riscv32-unknown-elf-gcc -O2 -g -fno-jump-tables -fno-tree-loop-distribute-patterns -Wextra -Wall -Wno-unused-parameter -Wno-unused-variable -Wno-unused-function -Wundef -fdata-sections -ffunction-sections -march=rv32imcxgap8 -mPE=8 -mFC=1 -D__riscv__ -D__pulp__ -DCONFIG_GAP -MMD -MP -c main.c  -I/home/user/gap8/gap_sdk/install/GAP8/include  -I/home/user/gap8/gap_sdk/install/GAP8/include/io  -I/home/user/gap8/gap_sdk/install/workstation/include  -include /home/user/gap8/gap_sdk/install/GAP8/include/rt/chips/gap/config.h -MD -MF /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV/main.d -o /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV/main.o
+main.c: In function 'main':
+main.c:1631:2: warning: implicit declaration of function 'PMU_set_voltage' [-Wimplicit-function-declaration]
+  PMU_set_voltage(1150, 0);
+  ^~~~~~~~~~~~~~~
+riscv32-unknown-elf-gcc -MMD -MP -Wl,--gc-sections -O2 -g -o /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV/test  /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV/main.o -L/home/user/gap8/gap_sdk/install/GAP8/lib/gap -lrt -lrtio -lrt -lgcc -T/home/user/gap8/gap_sdk/install/workstation/ld/link.gap8.ld -T/home/user/gap8/gap_sdk/install/workstation/ld/gapuino.conf.ld -nostartfiles -nostdlib -include /home/user/gap8/gap_sdk/install/GAP8/include/rt/chips/gap/config.h
+riscv32-unknown-elf-objdump -D /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV/test > /home/user/gap8/gap_sdk/benchmarks/xornet/BUILD/GAP8/GCC_RISCV/test.s
+/home/user/gap8/gap_sdk/install/workstation/runner/run_gapuino.sh 
+
+
+          ,ad8888ba,        db        88888888ba   ad88888ba   
+         d8"'    `"8b      d88b       88      "8b d8"     "8b  
+        d8'               d8'`8b      88      ,8P Y8a     a8P  
+        88               d8'  `8b     88aaaaaa8P'  "Y8aaa8P"   
+        88      88888   d8YaaaaY8b    88""""""'    ,d8"""8b,   
+        Y8,        88  d8""""""""8b   88          d8"     "8b  
+         Y8a.    .a88 d8'        `8b  88          Y8a     a8P  
+          `"Y88888P" d8'          `8b 88           "Y88888P"   
+
+---------------------------------GAPUINO------------------------------------
+
+/home/user/gap8/gap_sdk/install/workstation/bin/plpbridge:25: DeprecationWarning: the imp module is deprecated in favour of importlib; see the module's documentation for alternative uses
+  import imp
+Bridge init - log level 1
+Program exited
+Loading binary through jtag
+Notifying to boot code that we are doing a JTAG boot
+Cable state change connected
+Loading binary from test
+Loading section (base: 0x1b000004, size: 0x3f4)
+Loading section (base: 0x1b0003f8, size: 0x0)
+Init section to 0 (base: 0x1b0003f8, size: 0x808)
+Loading section (base: 0x1c000000, size: 0x7ead4)
+Init section to 0 (base: 0x1c07ead4, size: 0x1b0)
+Loading section (base: 0x1c07ec84, size: 0x10)
+debug address 0x1c000090 contents 0x1c009668
+debug address 0x1c000090 contents 0x1c009668
+Start execution on GAP8
+
+
+                      --------------------------------------------------------
+                      --------------------------------------------------------
+                      ---------------   GAP8 benchmarks   --------------------
+                      --------------------------------------------------------
+                      --------------------------------------------------------
+
+
+Gap8 Input Voltage    : 1.2 Volts
+Fabric Controller Freq: 250 MhZ
+Cluster  Freq         : 175 MhZ
+
+
+Number of iterations for each benchmark: 100
+
+
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:    1408570 uSec. Cycles:  250486491
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:     229492 uSec. Cycles:   41048298
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:    1204895 uSec. Cycles:  214733486
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:     198333 uSec. Cycles:   35478355
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:     745087 uSec. Cycles:  132873667
+              Parallel-CI-BCNN Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:     130737 uSec. Cycles:   23381423
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:     706635 uSec. Cycles:  125940515
+              Parallel-XOR-Net Input: 14 x 14 x 32, 3x3 Filter: 32 (x100 iterations) Time:     125946 uSec. Cycles:   22518694
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:    1141204 uSec. Cycles:  203727441
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:     179901 uSec. Cycles:   32215336
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:    1068268 uSec. Cycles:  190654171
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:     164154 uSec. Cycles:   29396495
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:     506683 uSec. Cycles:   90341841
+              Parallel-CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:      85785 uSec. Cycles:   15321147
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:     485535 uSec. Cycles:   86341386
+              Parallel-XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 8 (x100 iterations) Time:      82977 uSec. Cycles:   14836960
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:    1467987 uSec. Cycles:  261826770
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:     239044 uSec. Cycles:   42827584
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:    1341278 uSec. Cycles:  239130398
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:     218323 uSec. Cycles:   39098291
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:     767121 uSec. Cycles:  137057180
+              Parallel-CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:     135743 uSec. Cycles:   24308153
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:     730103 uSec. Cycles:  130348144
+              Parallel-XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 16 (x100 iterations) Time:     130463 uSec. Cycles:   23345461
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:    2172669 uSec. Cycles:  388162679
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:     365844 uSec. Cycles:   65512231
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:    1935913 uSec. Cycles:  345554702
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:     326569 uSec. Cycles:   58540268
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:    1291382 uSec. Cycles:  230558826
+              Parallel-CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:     236053 uSec. Cycles:   42271712
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:    1223053 uSec. Cycles:  218413417
+              Parallel-XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 32 (x100 iterations) Time:     225494 uSec. Cycles:   40348748
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:    3586700 uSec. Cycles:  640055899
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:     619660 uSec. Cycles:  110836035
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:    3127747 uSec. Cycles:  558278404
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:     544372 uSec. Cycles:   97367232
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:    2335205 uSec. Cycles:  417321271
+              Parallel-CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:     436401 uSec. Cycles:   78195301
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:    2209137 uSec. Cycles:  394459475
+              Parallel-XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 64 (x100 iterations) Time:     415314 uSec. Cycles:   74350812
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:    4997193 uSec. Cycles:  892982400
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:     870758 uSec. Cycles:  156227062
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:    4316101 uSec. Cycles:  770891340
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:     760285 uSec. Cycles:  136250160
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:    3386810 uSec. Cycles:  604382315
+              Parallel-CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:     636963 uSec. Cycles:  114092487
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:    3194214 uSec. Cycles:  570486882
+              Parallel-XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 96 (x100 iterations) Time:     605194 uSec. Cycles:  108388852
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:    6405426 uSec. Cycles: 1144649333
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:    1124542 uSec. Cycles:  201546046
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:    5505828 uSec. Cycles:  983641453
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:     979523 uSec. Cycles:  175075239
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:    4428070 uSec. Cycles:  791131304
+              Parallel-CI-BCNN Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:     837951 uSec. Cycles:  149997020
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:    4178101 uSec. Cycles:  746490792
+              Parallel-XOR-Net Input: 14 x 14 x 64, 3x3 Filter: 128 (x100 iterations) Time:     794952 uSec. Cycles:  142370288
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:    3047241 uSec. Cycles:  544364884
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:     503662 uSec. Cycles:   90383880
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:    2775452 uSec. Cycles:  495801232
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:     456849 uSec. Cycles:   81774882
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:    1935852 uSec. Cycles:  345989876
+              Parallel-CI-BCNN Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:     342926 uSec. Cycles:   61468170
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:    1838318 uSec. Cycles:  328524598
+              Parallel-XOR-Net Input: 14 x 14 x 96, 3x3 Filter: 32 (x100 iterations) Time:     326722 uSec. Cycles:   58491755
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:    3929932 uSec. Cycles:  702576412
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:     638794 uSec. Cycles:  114559323
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:    3631775 uSec. Cycles:  649047010
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:     586609 uSec. Cycles:  105107216
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:    2615936 uSec. Cycles:  467600001
+              Parallel-CI-BCNN Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:     449188 uSec. Cycles:   80439668
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:    2487304 uSec. Cycles:  444409565
+              Parallel-XOR-Net Input: 14 x 14 x 128, 3x3 Filter: 32 (x100 iterations) Time:     427307 uSec. Cycles:   76399260
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:    4809509 uSec. Cycles:  859444842
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:     772430 uSec. Cycles:  138599099
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:    4474091 uSec. Cycles:  799881849
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:     715027 uSec. Cycles:  128055634
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:    3293274 uSec. Cycles:  588718283
+              Parallel-CI-BCNN Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:     556884 uSec. Cycles:   99681576
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:    3133759 uSec. Cycles:  560033134
+              Parallel-XOR-Net Input: 14 x 14 x 160, 3x3 Filter: 32 (x100 iterations) Time:     528839 uSec. Cycles:   94602820
+
+                      ---------------   Original XNOR-Net Algorithm   ---------------
+          Scaled-XNOR-Net-Conv Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:    5678528 uSec. Cycles: 1014989577
+      Parallel-Scaled-XNOR-Net Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:     905487 uSec. Cycles:  162419880
+
+                      ---------------   XOR-Net-S Algorithm   ---------------
+             XOR-Net-S-layer=1 Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:    5315521 uSec. Cycles:  950572820
+          Parallel-XOR-Net-S-1 Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:     841980 uSec. Cycles:  151027493
+
+                      ---------------           CI-BCNN   ---------------
+                       CI-BCNN Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:    3963990 uSec. Cycles:  708859082
+              Parallel-CI-BCNN Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:     659088 uSec. Cycles:  118130278
+
+                      ---------------           XOR-Net   ---------------
+                       XOR-Net Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:    3774384 uSec. Cycles:  674525211
+              Parallel-XOR-Net Input: 14 x 14 x 192, 3x3 Filter: 32 (x100 iterations) Time:     624939 uSec. Cycles:  111992168
+Loop exited
