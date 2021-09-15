@@ -24,17 +24,18 @@
  - https://github.com/GreenWaves-Technologies/benchmarks
 
 
- If you find this repository useful, please cite:
- `
- @inproceedings{zhu2020xor,
-  title={XOR-Net: An Efficient Computation Pipeline for Binary Neural Network Inference on Edge Devices},
+ If you find this repository useful, please cite:  
+ 
+ ```
+ @inproceedings{zhu2020xor,  
+  title={XOR-Net: An Efficient Computation Pipeline for Binary Neural Network Inference on Edge Devices},  
   author={Zhu, Shien and Duong, Luan HK and Liu, Weichen},
   booktitle={2020 IEEE 26th International Conference on Parallel and Distributed Systems (ICPADS)},
   pages={124--131},
   year={2020},
   organization={IEEE}
 }
- `
+ ```
 
 
 
