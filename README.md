@@ -1,4 +1,4 @@
-# The XOR-Net Paper Experiment Source Code
+# The Experiment Source Code of XOR-Net Paper
 
 ### Target Platform:
  - Hardware: [GreenWaves GAP8](https://greenwaves-technologies.com/gap8_mcu_ai/).
